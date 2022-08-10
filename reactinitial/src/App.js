@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Character from "./components/Character"
 import LoadingMask from "./components/LoadingMask"
+import Subscription from "./components/Subscription"
 
 const App = () => {
 
@@ -21,6 +22,8 @@ const App = () => {
       {
         characters ? characters.map((character, index) => <Character key={index} name={character.name} details={character.details} />) : <LoadingMask />
       }
+
+      <Subscription />
 
     </div>
   )

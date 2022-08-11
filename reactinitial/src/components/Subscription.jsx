@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 import LoadingMask from "./LoadingMask";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
-function Subscription() {
+function Subscription({ childParentCommunication }) {
   const [email, setEmail] = useState("");
   const [isDisabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState("");
+
+  // - - - - Csak functionnal tudok parent elemnek átadni adatot
+  useEffect(() => {
+    childParentCommunication(subscribed);
+  }, [childParentCommunication, subscribed]);
 
   // - - - - Email validation
   const validateEmail = (email) =>
@@ -31,7 +39,7 @@ function Subscription() {
       body: JSON.stringify({ email: email }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => setSubscribed(data)) // - - MIÉRT LESZ TRUE?
 
       .finally(() => {
         setLoading(false);
@@ -42,11 +50,27 @@ function Subscription() {
     <>
       <form>
         <h3>Subscribe to our newsletter</h3>
-        <input type="text" value={email} onChange={onEmailChange} />
-        <button type="submit" disabled={isDisabled} onClick={handleSubmit}>
-          Subscribe to our newsletter
-        </button>
+        {!loading && !subscribed && (
+          <>
+            <TextField
+              variant="outlined"
+              type="text"
+              value={email}
+              onChange={onEmailChange}
+            />
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={isDisabled}
+              onClick={handleSubmit}
+            >
+              Subscribe to our newsletter
+            </Button>
+          </>
+        )}
         {loading && <LoadingMask />}
+
+        {subscribed && <p>Subscribed</p>}
       </form>
     </>
   );

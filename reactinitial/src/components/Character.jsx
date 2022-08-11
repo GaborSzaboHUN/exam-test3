@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Character.css";
+import Button from "@mui/material/Button";
 
 function Character({ name, details }) {
   const [isVisible, setVisible] = useState(false);
@@ -22,7 +23,9 @@ function Character({ name, details }) {
     <>
       <h2>{name}</h2>
       <p className={isVisible ? "" : "hidden"}>{details}</p>
-      <button onClick={visibilityHandler}>{buttonText}</button>
+      <Button variant="contained" onClick={visibilityHandler}>
+        {buttonText}
+      </Button>
     </>
   );
 }
